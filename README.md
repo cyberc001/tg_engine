@@ -26,4 +26,8 @@ Run the provided makefile:
 make
 ```
 to get file named `libtg_engine.a`. This is a static library file you can can link against.
+Don't forget to add `-fms-extensions` flag when using TG Engine headers.
 Building wasn't tested on more than one system, but it uses basically nothing than **cstdlib**, **unistd.h** and **sys/ioctl.h**.
+
+#### Usage
+For now, refer to the `example/` directory to get a hang to how use the library (especially for keybind configuration).

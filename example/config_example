@@ -1,0 +1,22 @@
+keys = {
+	next_window = page_down
+	prev_window = page_up
+	next_ui_element = key_down
+	prev_ui_element = key_up
+
+	activate_ui_element = enter
+	ui_element_up = key_left
+	ui_element_down = key_right
+
+	window_change_mode = delete
+		window_move_left = key_left
+		window_move_right = key_right
+		window_move_up = key_up
+		window_move_down = key_down
+
+		window_grow_w = key_right
+		window_shrink_w = key_left
+		window_grow_h = key_down
+		window_shrink_h = key_up
+		window_resize_to_fit = backspace
+}
