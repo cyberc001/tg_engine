@@ -43,7 +43,7 @@ static void ui_textbox_on_input(ui_element* _self, utf_char_t char_in)
 			*inp = '\0';
 		}
 	}
-	else{
+	else if(char_in[0] != '\n'){
 		if(inp - self->input > self->input_ln - strlen(char_in))
 			return;
 		for(char* i = char_in; *i; ++i, ++inp)
