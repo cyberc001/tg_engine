@@ -167,15 +167,13 @@ void window_list_on_input(utf_char_t char_in)
 					}
 				}
 			}
-			else{
-				int pass_to_elems = 1;
-				if(wnd_active && wnd_active->on_input)
-					pass_to_elems = wnd_active->on_input(wnd_active, char_in);
-				if(pass_to_elems){
-					if(wnd_active->active_elem)
-						if(wnd_active->active_elem->on_input)
-							wnd_active->active_elem->on_input(wnd_active->active_elem, char_in);
-				}
+			int pass_to_elems = 1;
+			if(wnd_active && wnd_active->on_input)
+				pass_to_elems = wnd_active->on_input(wnd_active, char_in);
+			if(pass_to_elems){
+				if(wnd_active->active_elem)
+					if(wnd_active->active_elem->on_input)
+						wnd_active->active_elem->on_input(wnd_active->active_elem, char_in);
 			}
 		} break;
 		case WINDOW_MODE_MOVE:
