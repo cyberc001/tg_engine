@@ -118,7 +118,7 @@ void window_list_on_input(utf_char_t char_in)
 			else if(check_bind(binds, "next_window")){
 				window* nxt = wnd_active->next;
 				while(nxt){
-					if(nxt->can_be_active)
+					if(nxt->flags & WINDOW_FLAG_CAN_BE_ACTIVE)
 					{ window_list_set_active(nxt); break; }
 					nxt = nxt->next;
 				}
@@ -126,7 +126,7 @@ void window_list_on_input(utf_char_t char_in)
 			else if(check_bind(binds, "prev_window")){
 				window* prv = wnd_active->prev;
 				while(prv){
-					if(prv->can_be_active)
+					if(prv->flags & WINDOW_FLAG_CAN_BE_ACTIVE)
 					{ window_list_set_active(prv); break; }
 					prv = prv->prev;
 				}
@@ -135,7 +135,7 @@ void window_list_on_input(utf_char_t char_in)
 				if(!wnd_active->active_elem){
 					ui_element* nxt = wnd_active->elem_first;
 					while(nxt){
-						if(nxt->can_be_active)
+						if(nxt->flags & UI_ELEMENT_FLAG_CAN_BE_ACTIVE)
 						{ wnd_active->active_elem = nxt; break; }
 						nxt = nxt->next;
 					}
@@ -143,7 +143,7 @@ void window_list_on_input(utf_char_t char_in)
 				else{
 					ui_element* nxt = wnd_active->active_elem->next;
 					while(nxt){
-						if(nxt->can_be_active)
+						if(nxt->flags & UI_ELEMENT_FLAG_CAN_BE_ACTIVE)
 						{ wnd_active->active_elem = nxt; break; }
 						nxt = nxt->next;
 					}
@@ -153,7 +153,7 @@ void window_list_on_input(utf_char_t char_in)
 				if(!wnd_active->active_elem){
 					ui_element* prv = wnd_active->elem_last;
 					while(prv){
-						if(prv->can_be_active)
+						if(prv->flags & UI_ELEMENT_FLAG_CAN_BE_ACTIVE)
 						{ wnd_active->active_elem = prv; break; }
 						prv = prv->prev;
 					}
@@ -161,7 +161,7 @@ void window_list_on_input(utf_char_t char_in)
 				else{
 					ui_element* prv = wnd_active->active_elem->prev;
 					while(prv){
-						if(prv->can_be_active)
+						if(prv->flags & UI_ELEMENT_FLAG_CAN_BE_ACTIVE)
 						{ wnd_active->active_elem = prv; break; }
 						prv = prv->next;
 					}
@@ -244,7 +244,7 @@ void window_list_on_draw(window* head)
 {
 	unsigned wnd_no = 0, active_no = 0;
 	while(head){
-		if(head != wnd_active){
+		if(head != wnd_active || head->flags & WINDOW_FLAG_RENDER_ON_BOTTOM){
 			term_set_bounding_box(head->x, head->y, head->x + head->w - 1, head->y + head->h - 1);
 			window_draw_border(head, wnd_no);
 			ui_element* cur = head->elem_first;
@@ -260,7 +260,8 @@ void window_list_on_draw(window* head)
 		++wnd_no;
 		head = head->next;
 	}
-	if(wnd_active){
+
+	if(wnd_active && !(wnd_active->flags & WINDOW_FLAG_RENDER_ON_BOTTOM)){
 		term_set_bounding_box(wnd_active->x, wnd_active->y, wnd_active->x + wnd_active->w - 1, wnd_active->y + wnd_active->h - 1);
 		window_draw_border(wnd_active, active_no);
 		ui_element* cur = wnd_active->elem_first;

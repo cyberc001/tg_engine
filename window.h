@@ -6,6 +6,9 @@
 #define WINDOW_BORDER_STYLE_NONE				0
 #define WINDOW_BORDER_STYLE_BOX_DOUBLE_LINE		1
 
+#define WINDOW_FLAG_CAN_BE_ACTIVE				1
+#define WINDOW_FLAG_RENDER_ON_BOTTOM			2	// causes window not to be rendered at top when it is active
+
 typedef struct ui_element ui_element;
 
 typedef struct window window;
@@ -16,7 +19,7 @@ struct window{
 	int border_style;
 	const char* title;
 
-	int can_be_active;
+	int flags;
 
 	/* Return non-0 if the input should be passed further (to UI elements) */
 	int (*on_input)(window* self, utf_char_t char_in);

@@ -16,7 +16,7 @@ ui_label* ui_label_create(size_t x, size_t y,
 	_new->text = text;
 
 	_new->prev = _new->next = NULL;
-	_new->can_be_active = 0;
+	_new->flags = 0;
 	_new->on_input = NULL;
 	_new->on_draw = ui_label_on_draw;
 	return _new;

@@ -31,7 +31,7 @@ ui_combobox* ui_combobox_create(size_t x, size_t y, const char* text,
 	_new->on_activation = on_activation;
 
 	_new->prev = _new->next = NULL;
-	_new->can_be_active = 1;
+	_new->flags = UI_ELEMENT_FLAG_CAN_BE_ACTIVE;
 	_new->on_input = ui_combobox_on_input;
 	_new->on_draw = ui_combobox_on_draw;
 

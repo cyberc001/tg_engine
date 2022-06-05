@@ -83,7 +83,7 @@ int main()
 	window* wnd_test = malloc(sizeof(window));
 	*wnd_test = (window){.x = 15, .y = 15, .w = 30, .h = 10,
 							.title = "test window", .border_style = WINDOW_BORDER_STYLE_BOX_DOUBLE_LINE,
-							.can_be_active = 1};
+							.flags = WINDOW_FLAG_CAN_BE_ACTIVE};
 	window_add_ui_element(wnd_test, (ui_element*)ui_button_create(1, 1, "a button", UI_BUTTON_STYLE_BRACKETS, abutton_press));
 	window_add_ui_element(wnd_test, (ui_element*)ui_checkbox_create(1, 2, "a checkbox", NULL));
 	window_add_ui_element(wnd_test, (ui_element*)ui_textbox_create(1, 3, 10, 128, NULL));
@@ -97,7 +97,7 @@ int main()
 	window* wnd_test2 = malloc(sizeof(window));
 	*wnd_test2 = (window){.x = 40, .y = 13, .w = 35, .h = 10,
 							.title = "test window no. #2", .border_style = WINDOW_BORDER_STYLE_BOX_DOUBLE_LINE,
-							.can_be_active = 1};
+							.flags = WINDOW_FLAG_CAN_BE_ACTIVE};
 	window_add_ui_element(wnd_test2, (ui_element*)ui_label_create(1, 1, 28, 3, 1, "This label wraps around it's " BGCLR_RED "width." FORMAT_NORMAL " Crazy, right?"));
 	window_add_ui_element(wnd_test2, (ui_element*)ui_scrollbox_create(1, 4, 28, 5, "Same thing, but " FORMAT_UNDERLINE "scrollable" FORMAT_NORMAL ". I called it scrollbox. Why? I don't fucking know. Noone knows. This mystery is beyond human comprehension. This may look like a " FGCLR_BLUE "padding text" FORMAT_NORMAL " to demonstrate how awesome this UI element is, but in fact, it's not the sole purpose of this text. Very few people can actually decipher what this text means."));
 	window_list_insert_after(wnd_test, wnd_test2);

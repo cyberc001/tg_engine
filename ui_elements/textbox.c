@@ -20,7 +20,7 @@ ui_textbox* ui_textbox_create(size_t x, size_t y, size_t w,
 	_new->on_change = on_change;
 
 	_new->prev = _new->next = NULL;
-	_new->can_be_active = 1;
+	_new->flags = UI_ELEMENT_FLAG_CAN_BE_ACTIVE;
 	_new->on_input = ui_textbox_on_input;
 	_new->on_draw = ui_textbox_on_draw;
 

@@ -21,7 +21,7 @@ ui_button* ui_button_create(size_t x, size_t y,
 	_new->on_press = on_press;
 
 	_new->prev = _new->next = NULL;
-	_new->can_be_active = 1;
+	_new->flags = UI_ELEMENT_FLAG_CAN_BE_ACTIVE;
 	_new->on_input = ui_button_on_input;
 	_new->on_draw = ui_button_on_draw;
 
