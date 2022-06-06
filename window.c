@@ -245,13 +245,14 @@ void window_list_on_draw(window* head)
 		if(head != wnd_active || head->flags & WINDOW_FLAG_RENDER_ON_BOTTOM){
 			term_set_bounding_box(head->x, head->y, head->x + head->w - 1, head->y + head->h - 1);
 			window_draw_border(head, wnd_no);
+			if(head->on_draw) head->on_draw(head);
+
 			ui_element* cur = head->elem_first;
 			while(cur){
 				term_draw_rect(cur->x + head->x, cur->y + head->y, cur->x + head->x + cur->w - 1, cur->y + head->y + cur->h - 1, " ", (term_char_format){0});
 				if(cur->on_draw) cur->on_draw(cur);
 				cur = cur->next;
 			}
-			if(head->on_draw) head->on_draw(head);
 		}
 		else
 			active_no = wnd_no;

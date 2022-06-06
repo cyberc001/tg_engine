@@ -3,6 +3,53 @@
 #include "draw.h"
 #include <stdlib.h>
 
+static size_t get_line_count(ui_scrollbox* self)
+{
+	const char* tx = self->text;
+	term_char_format textfmt = (term_char_format){0};
+	int x = 1, y = 0;
+	int y_confirmed = 0;
+	while(*tx){
+		utf_char_t ch;
+		input_utf_char_from_string(&tx, ch, &textfmt);
+		if(x == 1) y_confirmed = 1;
+		if(ch[0] == '\n'){
+			x = 1; ++y; y_confirmed = 0;
+			continue;
+		}
+		if(++x >= self->w){
+			x = 1; ++y; y_confirmed = 0;
+		}
+	}
+	return y + y_confirmed;
+}
+static size_t get_skip_amount(ui_scrollbox* self)
+{
+	const char* tx = self->text;
+	term_char_format textfmt = (term_char_format){0};
+	size_t char_cnt = 0;
+	int x = 1, y = 0;
+	if(y >= self->scroll_pos)
+		return 0;
+	while(*tx){
+		++char_cnt;
+		utf_char_t ch;
+		input_utf_char_from_string(&tx, ch, &textfmt);
+		if(ch[0] == '\n'){
+			x = 1; ++y;
+			if(y >= self->scroll_pos)
+				break;
+			continue;
+		}
+		if(++x >= self->w){
+			x = 1; ++y;
+			if(y >= self->scroll_pos)
+				break;
+		}
+	}
+	return char_cnt;
+}
+
 static void ui_scrollbox_on_input(ui_element* _self, utf_char_t char_in);
 static void ui_scrollbox_on_draw(ui_element* _self);
 
@@ -32,8 +79,7 @@ static void ui_scrollbox_on_input(ui_element* _self, utf_char_t char_in)
 			--self->scroll_pos;
 	}
 	else if(check_bind(binds, "ui_element_down")){
-		size_t text_ln = input_utf_string_length(self->text);
-		size_t text_lines = (text_ln + (self->w - 2)) / (self->w - 1);
+		size_t text_lines = get_line_count(self);
 		size_t max_scroll_pos = text_lines > self->h ? text_lines - self->h : 0;
 		if(self->scroll_pos + 1 <= max_scroll_pos)
 			++self->scroll_pos;
@@ -53,11 +99,10 @@ static void ui_scrollbox_on_draw(ui_element* _self)
 	term_draw_line(self->x + self->parent_wnd->x, self->y + self->parent_wnd->y + 1, self->x + self->parent_wnd->x, self->y + self->parent_wnd->y + self->h - 2, "░", (term_char_format){0});
 	term_setchar(self->x + self->parent_wnd->x, self->y + self->parent_wnd->y + self->h - 1, "▼");
 
-	size_t text_ln = input_utf_string_length(self->text);
-	size_t text_lines = (text_ln + (self->w - 2)) / (self->w - 1);
+	size_t text_lines = get_line_count(self);
 	size_t max_scroll_pos = text_lines > self->h ? text_lines - self->h : 0;
 	int slider_area = self->h - 2;
-	int slider_y = self->y + self->parent_wnd->y + 1 + (self->scroll_pos * slider_area) / max_scroll_pos;
+	int slider_y = self->y + self->parent_wnd->y + 1 + (max_scroll_pos == 0 ? 0 : (self->scroll_pos * slider_area) / (max_scroll_pos + 1));
 	term_setchar(self->x + self->parent_wnd->x, slider_y, "█");
 
 	term_draw_rect(self->x + self->parent_wnd->x + 1, self->y + self->parent_wnd->y, self->x + self->parent_wnd->x + self->w - 1, self->y + self->parent_wnd->y + self->h - 1, " ", bg_style);
@@ -65,7 +110,7 @@ static void ui_scrollbox_on_draw(ui_element* _self)
 	const char* tx = self->text;
 	int x = self->x + self->parent_wnd->x + 1;
 	int y = self->y + self->parent_wnd->y;
-	size_t skip = self->scroll_pos * (self->w - 1);
+	size_t skip = get_skip_amount(self);
 	while(*tx){
 		utf_char_t ch;
 		input_utf_char_from_string(&tx, ch, &textfmt);
@@ -74,6 +119,14 @@ static void ui_scrollbox_on_draw(ui_element* _self)
 
 		if(skip)
 		{ --skip; continue; }
+		if(ch[0] == '\n'){
+			x = self->x + self->parent_wnd->x + 1;
+			++y;
+			if(y >= self->y + self->parent_wnd->y + self->h)
+				break;
+			continue;
+		}
+
 		term_setchar(x, y, ch);
 		term_setformat_raw(x, y, tmp_fmt);
 		if(++x >= self->x + self->parent_wnd->x + self->w){
