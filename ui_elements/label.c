@@ -38,6 +38,12 @@ static void ui_label_on_draw(ui_element* _self)
 			term_char_format tmp_fmt = textfmt;
 			merge_formats(&tmp_fmt, &bg_style);
 
+			if(ch[0] == '\n'){
+				x = self->x + self->parent_wnd->x;
+				++y;
+				continue;
+			}
+
 			term_setchar(x, y, ch);
 			term_setformat_raw(x, y, tmp_fmt);
 			if(++x >= self->x + self->parent_wnd->x + self->w){

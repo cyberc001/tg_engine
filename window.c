@@ -1,6 +1,7 @@
 #include "window.h"
 
 #include <string.h>
+#include <stdlib.h>
 #include "screen.h"
 #include "draw.h"
 #include "ui_element.h"
@@ -30,6 +31,7 @@ void window_list_delete(window* to_delete)
 		to_delete->prev->next = to_delete->next;
 	if(to_delete->next)
 		to_delete->next->prev = to_delete->prev;
+	free(to_delete);
 }
 
 void window_add_ui_element(window* wnd, ui_element* elem)
