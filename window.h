@@ -8,6 +8,7 @@
 
 #define WINDOW_FLAG_CAN_BE_ACTIVE				1
 #define WINDOW_FLAG_RENDER_ON_BOTTOM			2	// causes window not to be rendered at top when it is active
+#define WINDOW_FLAG_CAN_BE_CLOSED				4	// can be closed using "window_close" bind
 
 typedef struct ui_element ui_element;
 

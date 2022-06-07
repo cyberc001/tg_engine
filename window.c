@@ -169,6 +169,16 @@ void window_list_on_input(utf_char_t char_in)
 					}
 				}
 			}
+			else if(check_bind(binds, "window_close")){
+				if(wnd_active->flags & WINDOW_FLAG_CAN_BE_CLOSED){
+					window* todel = wnd_active;
+					if(wnd_active->prev)
+						wnd_active = wnd_active->prev;
+					else
+						wnd_active = wnd_active->next;
+					window_list_delete(todel);
+				}
+			}
 			int pass_to_elems = 1;
 			if(wnd_active && wnd_active->on_input)
 				pass_to_elems = wnd_active->on_input(wnd_active, char_in);
