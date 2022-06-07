@@ -1,16 +1,4 @@
 #include "combobox.h"
-/*typedef struct ui_combobox ui_combobox;
-struct ui_combobox{
-	struct ui_element;
-
-	ui_combobox** active;
-	const char* text;
-	void (*on_activation)(ui_combobox* self);
-};
-
-ui_combobox* ui_combobox_create(size_t x, size_t y, const char* text,
-								ui_combobox** active,
-								void (*on_activation)(ui_combobox*);*/
 
 #include "draw.h"
 #include <stdlib.h>
@@ -34,6 +22,7 @@ ui_combobox* ui_combobox_create(size_t x, size_t y, const char* text,
 	_new->flags = UI_ELEMENT_FLAG_CAN_BE_ACTIVE;
 	_new->on_input = ui_combobox_on_input;
 	_new->on_draw = ui_combobox_on_draw;
+	_new->on_destroy = NULL;
 
 	return _new;
 }

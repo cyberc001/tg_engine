@@ -25,6 +25,7 @@ struct window{
 	/* Return non-0 if the input should be passed further (to UI elements) */
 	int (*on_input)(window* self, utf_char_t char_in);
 	void (*on_draw)(window* self);
+	void (*on_destroy)(window* self);
 
 	enum{
 		WINDOW_MODE_NORMAL = 0,

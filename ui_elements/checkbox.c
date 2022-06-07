@@ -21,6 +21,7 @@ ui_checkbox* ui_checkbox_create(size_t x, size_t y, const char* text,
 	_new->flags = UI_ELEMENT_FLAG_CAN_BE_ACTIVE;
 	_new->on_input = ui_checkbox_on_input;
 	_new->on_draw = ui_checkbox_on_draw;
+	_new->on_destroy = NULL;
 
 	return _new;
 }

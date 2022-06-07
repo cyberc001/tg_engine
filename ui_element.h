@@ -14,6 +14,7 @@ struct ui_element{
 
 	void (*on_input)(ui_element* self, utf_char_t char_in);
 	void (*on_draw)(ui_element* self);
+	void (*on_destroy)(ui_element* self);
 
 	window* parent_wnd;
 	struct ui_element *next, *prev;

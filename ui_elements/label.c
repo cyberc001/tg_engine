@@ -19,6 +19,7 @@ ui_label* ui_label_create(size_t x, size_t y,
 	_new->flags = 0;
 	_new->on_input = NULL;
 	_new->on_draw = ui_label_on_draw;
+	_new->on_destroy = NULL;
 	return _new;
 }
 

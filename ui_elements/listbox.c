@@ -15,6 +15,7 @@ ui_listbox* ui_listbox_create(size_t x, size_t y,
 	_new->w = w; _new->h = h;
 
 	_new->items = NULL;
+	_new->free_items = 0;
 	_new->item_cnt = 0;
 	_new->selection = 0;
 	_new->scroll_pos = 0;
@@ -24,6 +25,7 @@ ui_listbox* ui_listbox_create(size_t x, size_t y,
 	_new->flags = UI_ELEMENT_FLAG_CAN_BE_ACTIVE;
 	_new->on_input = ui_listbox_on_input;
 	_new->on_draw = ui_listbox_on_draw;
+	_new->on_destroy = NULL;
 	return _new;
 }
 
@@ -76,6 +78,12 @@ static void ui_listbox_on_draw(ui_element* _self)
 	}
 }
 
+static void ui_listbox_on_destroy(ui_element* _self)
+{
+	ui_listbox* self = (ui_listbox*)_self;
+	ui_listbox_clear_items(self);
+}
+
 
 void ui_listbox_add_item(ui_listbox* self, const char* item)
 {
@@ -84,9 +92,9 @@ void ui_listbox_add_item(ui_listbox* self, const char* item)
 	self->items[self->item_cnt - 1] = item;
 }
 
-void ui_listbox_clear_items(ui_listbox* self, int free_items)
+void ui_listbox_clear_items(ui_listbox* self)
 {
-	if(free_items)
+	if(self->free_items)
 		for(size_t i = 0; i < self->item_cnt; ++i)
 			free((char*)self->items[i]);
 	free(self->items);

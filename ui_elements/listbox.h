@@ -7,6 +7,7 @@ typedef struct ui_listbox ui_listbox;
 struct ui_listbox{
 	struct ui_element;
 
+	int free_items;
 	const char** items;
 	size_t item_cnt;
 
@@ -21,6 +22,6 @@ ui_listbox* ui_listbox_create(size_t x, size_t y,
 									void (*on_press)(ui_listbox*));
 
 void ui_listbox_add_item(ui_listbox* self, const char* item);
-void ui_listbox_clear_items(ui_listbox* self, int free_items);
+void ui_listbox_clear_items(ui_listbox* self);
 
 #endif

@@ -67,6 +67,7 @@ ui_scrollbox* ui_scrollbox_create(size_t x, size_t y,
 	_new->flags = UI_ELEMENT_FLAG_CAN_BE_ACTIVE;
 	_new->on_input = ui_scrollbox_on_input;
 	_new->on_draw = ui_scrollbox_on_draw;
+	_new->on_destroy = NULL;
 	return _new;
 }
 

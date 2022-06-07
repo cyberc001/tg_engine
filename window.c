@@ -31,6 +31,14 @@ void window_list_delete(window* to_delete)
 		to_delete->prev->next = to_delete->next;
 	if(to_delete->next)
 		to_delete->next->prev = to_delete->prev;
+
+	if(to_delete->on_destroy)
+		to_delete->on_destroy(to_delete);
+	ui_element* cur = to_delete->elem_first;
+	while(cur){
+		if(cur->on_destroy) cur->on_destroy(cur);
+		cur = cur->next;
+	}
 	free(to_delete);
 }
 
@@ -59,6 +67,9 @@ void window_remove_ui_element(window* wnd, ui_element* elem)
 		elem->next->prev = elem->prev;
 	if(wnd->active_elem == elem)
 		wnd->active_elem = elem->prev ? elem->prev : elem->next;
+	if(elem->on_destroy)
+		elem->on_destroy(elem);
+	free(elem);
 }
 
 
